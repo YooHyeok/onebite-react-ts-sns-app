@@ -1,2 +1,12 @@
 # Vite 기반 React Typescript SNS 프로젝트
-# [프로젝트 설치 가이드](INSTALL.md)
+# [***ONEBITE-EXAM***](ONEBITE-EAXM/README.md)
+## 목차
+1. 프로젝트 초기화
+2. Tailwind CSS
+3. Zustand
+4. Transtack Query
+
+<hr>
+<br>
+
+# [***ONEBITE-LOG***]()
