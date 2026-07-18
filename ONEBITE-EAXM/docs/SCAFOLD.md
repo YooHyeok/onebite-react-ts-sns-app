@@ -1,4 +1,4 @@
-# [Root/README.md](../README.md)
+# [***Root/README.md***](../README.md)
 
 # ***프로젝트 스케폴딩***
 - [App.tsx](src/App.tsx) 내 import문 제거 및 jsx 내 div 태그 구성 수정
