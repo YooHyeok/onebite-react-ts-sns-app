@@ -1,52 +1,5 @@
-function Typograph() {
+function Typography() {
   return <div>
-    <div className="text-5xl">A) TEXT</div>
-    <br />
-    <div>
-      <div className="text-3xl">1. [size] font-size : text-크기</div>
-      {/* 1. [size] font-size : text-크기 */}
-      <div className="text-xs">text-xs</div>
-      <div className="text-sm">text-sm</div>
-      <div className="text-lg">text-lg</div>
-      <div className="text-xl">text-xl</div>
-      <div className="text-2xl">text-2xl</div>
-      <div className="text-[13px]">text-[13px]</div> {/* 임의 값 (Arbitray Values) 설정 문법 */}
-      <div className="text-3xl">2. [color] : text-색상-명도(밝기: 최대 900)</div>
-      {/* 2. [color] : text-색상-명도(밝기: 최대 900) */}
-      <div className="text-red-500">text-red-500</div>
-      <div className="text-[rgb(100,30,200)]">text-[rgb(100,30,200)]</div> {/* 임의 값 (Arbitray Values) 설정 문법 : RGB*/}
-
-      <div className="text-3xl">3. [weight] font-weight : font-굵기(thin~black: 100~900)</div>
-      {/* 3. [weight] font-weight : font-굵기(thin~black: 100~900) */}
-      <div className="font-thin">font-thin</div>
-      <div className="font-medium">font-medium</div>
-      <div className="font-black">font-black</div>
-      <div className="font-[333]">font-[333]</div>
-    </div>
-    <br />
-
-    <div className="text-5xl">B) Background</div>
-    <br />
-    <div>
-      {/* 1. [color] background-color : bg-색상-명도(밝기: 최대 900) */}
-      <div className="bg-amber-500">bg-amber-500</div>
-    </div>
-    <br />
-
-    <div className="text-5xl">C) Size</div>
-    <br />
-    <div>
-      {/* 1. [width] 너비 : w-너비 → 너비=4의 배수 calc(spacing(간격단위 기본값 4px) * 너비)  ex) w-2 = 2*4px=8x */}
-      <div className="text-3xl">1. [width] 너비 : w-너비 → 너비=4의 배수 calc(spacing(간격단위 기본값 4px) * 너비)  ex) w-2 = 2*4px=8x</div>
-      <div className="w-25 bg-blue-500">w-25(100px)</div>
-      <div className="w-[150.5px] bg-blue-500">w-[150.5px](value)</div>
-      <div className="w-full bg-blue-500">w-full(100%)</div>
-      {/* 2. [height] 높이: h-너비 */}
-      <div className="text-3xl">2. [height] 높이: h-너비</div>
-      <div className="h-15 bg-red-500">h-15(60px)</div>
-    </div>
-    <br />
-
     <div className="text-5xl">D) Spacing: 여백</div>
     <br />
     <div>
@@ -117,7 +70,10 @@ function Typograph() {
         </div>
       </div>
     </div>
+    <br />
+    <hr />
+    <br />
   </div>
 }
 
-export default Typograph
+export default Typography

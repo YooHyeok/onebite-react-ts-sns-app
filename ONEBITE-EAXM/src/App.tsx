@@ -1,10 +1,11 @@
-import './App.css'
-import Typograph from "./components/tailwind/Typograph"
+import "./App.css";
+import Tailwind from "./components/tailwind/Tailwind";
 function App() {
-  return <div>
-    {/* 1. 타이포 그래프 */}
-    <Typograph/>
-  </div>
+  return (
+    <div>
+      <Tailwind />
+    </div>
+  );
 }
 
-export default App
+export default App;
