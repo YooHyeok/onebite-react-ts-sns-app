@@ -2,6 +2,7 @@ import Typography from "./Typography";
 import Background from "./Background";
 import Sizing from "./Sizing";
 import Spacing from "./Spacing";
+import Borders from "./Borders";
 
 function Tailwind() {
   return (
@@ -10,6 +11,7 @@ function Tailwind() {
       <Background />
       <Sizing />
       <Spacing />
+      <Borders />
     </div>
   );
 }
