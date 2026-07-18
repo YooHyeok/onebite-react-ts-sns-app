@@ -1,6 +1,6 @@
-# [***Root/README.md***](../../README.md)
+# [_**Root/README.md**_](../../README.md)
 
-# ***1) Typography***
+# _**1) Typography**_
 
 ## 목차
 
@@ -25,10 +25,10 @@
 2. margin
 
 ## A) Text
+
 <details>
 <summary>열기/닫기</summary>
 <br>
-
 
 ### 1. font-size
 
@@ -202,7 +202,76 @@ margin은 요소의 외부 여백을 의미하며 `m-값` 형태로 지정한다
 </details>
 <br>
 
-# ***Template***
+# _**2) Borders**_
+
+## 목차
+
+**A) Border**
+
+1. border-width
+2. border-color
+3. border-radius
+
+<details>
+<summary>열기/닫기</summary>
+<br>
+
+## A) Border
+
+### 1. border-width
+
+Tailwind CSS에서 테두리는 `border` 클래스로 적용한다.
+기본 `border`는 1px 테두리를 만들고, `border-2`처럼 숫자를 붙이면 테두리 두께를 지정할 수 있다.
+특정 축이나 방향에만 테두리를 적용할 때는 `border-x`, `border-y`, `border-t`, `border-r`, `border-b`, `border-l`을 사용한다.
+
+```tsx
+<div className="border">border(1px)</div>
+<div className="border-2">border-[2](px)</div>
+```
+
+```tsx
+<div className="m-5 border-x">border-x(alias)</div>
+<div className="m-5 border-y">border-y(alias)</div>
+<div className="m-5 border-x-2 border-y-2">border-x|y-[2](px)</div>
+```
+
+```tsx
+<div className="m-5 border-t">border-t(op)</div>
+<div className="m-5 border-l">border-l(eft)</div>
+<div className="m-5 border-r">border-r(ight)</div>
+<div className="m-5 border-b">border-b(ottom)</div>
+```
+
+```tsx
+<div className="m-5 border-t-2 border-r-2 border-b-2 border-l-2">
+  border-t|r|b|l-[2](px)
+</div>
+```
+
+### 2. border-color
+
+테두리 색상은 `border-색상-명도` 형태로 지정한다.
+예를 들어 `border-red-500`은 red 색상 팔레트의 500 단계 색상을 테두리에 적용한다.
+테두리 색상은 먼저 테두리 두께가 있어야 화면에서 확인할 수 있다.
+
+```tsx
+<div className="border-x-2 border-y-2 border-red-500">border-red-500</div>
+```
+
+### 3. border-radius
+
+모서리 둥글기는 `rounded-강도` 형태로 지정한다.
+`rounded-md`는 medium 정도의 border-radius를 적용한다.
+테두리가 있는 요소에 함께 사용하면 둥근 모서리 형태를 더 쉽게 확인할 수 있다.
+
+```tsx
+<div className="rounded-md border-x-2 border-y-2">rounded-md</div>
+```
+
+</details>
+<br>
+
+# _**Template**_
 
 <details>
 <summary>열기/닫기</summary>
