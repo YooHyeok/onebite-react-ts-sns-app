@@ -271,6 +271,137 @@ Tailwind CSS에서 테두리는 `border` 클래스로 적용한다.
 </details>
 <br>
 
+# _**3) FlexboxGrid**_
+
+## 목차
+
+**A) Flexbox**
+
+1. flex container
+2. justify-content
+3. align-items
+4. flex-direction
+5. flex item
+
+<details>
+<summary>열기/닫기</summary>
+<br>
+
+## A) Flexbox
+
+### 1. flex container
+
+`flex` 클래스는 요소를 flex container로 만든다.
+부모 요소에 `flex`를 적용하면 자식 요소들이 기본값으로 가로 방향(row)에 배치된다.
+
+```tsx
+<div className="flex">
+  <div className="w-10 border">1</div>
+  <div className="w-10 border">2</div>
+  <div className="w-10 border">3</div>
+  <div className="w-10 border">4</div>
+</div>
+```
+
+### 2. justify-content
+
+`justify-content`는 flex 컨테이너 내부 요소들의 배치, 기본적으로 수평 방향 배치를 결정한다.
+`justify-*` 클래스는 flex container 안에서 자식 요소들의 주축 방향 배치를 결정한다.
+기본 flex 방향이 row일 때 주축은 가로 방향이다.
+`justify-between`, `justify-center`, `justify-evenly`처럼 배치 방식을 선택할 수 있다.
+
+```tsx
+<div className="flex justify-between">
+  <div className="w-10 border">1</div>
+  <div className="w-10 border">2</div>
+  <div className="w-10 border">3</div>
+  <div className="w-10 border">4</div>
+</div>
+```
+
+```tsx
+<div className="flex justify-center">
+  <div className="w-10 border">1</div>
+  <div className="w-10 border">2</div>
+  <div className="w-10 border">3</div>
+  <div className="w-10 border">4</div>
+</div>
+```
+
+```tsx
+<div className="flex justify-evenly">
+  <div className="w-10 border">1</div>
+  <div className="w-10 border">2</div>
+  <div className="w-10 border">3</div>
+  <div className="w-10 border">4</div>
+</div>
+```
+
+### 3. align-items
+
+`align-items`는 flex 컨테이너 내부 요소들의 배치, 기본적으로 수직 방향 배치를 결정한다.
+`items-*` 클래스는 flex container 안에서 자식 요소들의 교차축 방향 배치를 결정한다.
+기본 flex 방향이 row일 때 교차축은 세로 방향이다.
+`items-center`는 자식 요소를 세로 가운데에 배치하고, `items-start`는 세로 시작 지점에 배치한다.
+
+```tsx
+<div className="flex items-center justify-evenly">
+  <div className="h-10 w-10 border">1</div>
+  <div className="h-20 w-10 border">2</div>
+  <div className="h-30 w-10 border">3</div>
+  <div className="h-40 w-10 border">4</div>
+</div>
+```
+
+```tsx
+<div className="flex items-start justify-evenly">
+  <div className="h-10 w-10 border">1</div>
+  <div className="h-20 w-10 border">2</div>
+  <div className="h-30 w-10 border">3</div>
+  <div className="h-40 w-10 border">4</div>
+</div>
+```
+
+### 4. flex-direction
+
+`flex-col`과 `flex-row`는 flex item이 쌓이는 방향을 결정한다.
+`flex-col`은 세로 방향(column)으로 배치하고, `flex-row`는 가로 방향(row)으로 배치한다.
+
+```tsx
+<div className="flex flex-col items-start justify-evenly">
+  <div className="h-10 w-10 border">1</div>
+  <div className="h-20 w-10 border">2</div>
+  <div className="h-30 w-10 border">3</div>
+  <div className="h-40 w-10 border">4</div>
+</div>
+```
+
+```tsx
+<div className="flex flex-row items-start justify-evenly">
+  <div className="h-10 w-10 border">1</div>
+  <div className="h-20 w-10 border">2</div>
+  <div className="h-30 w-10 border">3</div>
+  <div className="h-40 w-10 border">4</div>
+</div>
+```
+
+### 5. flex item
+
+`flex-1`은 flex item이 가능한 남은 공간을 차지하도록 만든다.
+같은 flex container 안에서 특정 자식 요소에 `flex-1`을 주면, 해당 요소가 다른 요소보다 더 넓은 공간을 확보한다.
+
+```tsx
+<div className="flex flex-row items-start justify-evenly">
+  <div className="h-10 w-10 border">1</div>
+  <div className="h-20 w-10 flex-1 border">2</div>
+  <div className="h-30 w-10 border">3</div>
+  <div className="h-40 w-10 border">4</div>
+</div>
+```
+
+</details>
+<br>
+
 # _**Template**_
 
 <details>
