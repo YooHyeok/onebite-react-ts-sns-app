@@ -7,7 +7,10 @@ function App() {
   return (
     <div>
       {/* <Tailwind /> */}
-      <Button>버튼!</Button>
+      {/* <Button>버튼!</Button> */}
+      <div className="text-primary">Primary</div>
+      <div className="text-muted">Muted</div>
+      <div className="text-destructive">Destructive</div>
     </div>
   );
 }
