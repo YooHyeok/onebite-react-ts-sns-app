@@ -3,6 +3,7 @@ import Tailwind from "./components/tailwind/Tailwind";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Textarea } from "./components/ui/textarea";
 
 const isActive = true;
 
@@ -24,6 +25,7 @@ function App() {
         <Button variant={"outline"}>버튼</Button>
         <Button variant={"secondary"}>버튼</Button>
         <Input value={"기본값"} placeholder="입력 ..." />
+        <Textarea />
       </div>
     </div>
   );
