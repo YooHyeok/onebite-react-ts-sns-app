@@ -2,6 +2,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 function Shadcn() {
   return (
@@ -18,8 +20,18 @@ function Shadcn() {
       <Button variant={"link"}>버튼</Button>
       <Button variant={"outline"}>버튼</Button>
       <Button variant={"secondary"}>버튼</Button>
-      <Input value={"기본값"} placeholder="입력 ..." />
+      <Input placeholder="입력 ..." />
       <Textarea />
+      <Toaster />
+      <Button
+        onClick={() => {
+          toast("버튼이 클릭되었습니다.", {
+            position: "top-center",
+          });
+        }}
+      >
+        sonner 버튼
+      </Button>
     </div>
   );
 }
