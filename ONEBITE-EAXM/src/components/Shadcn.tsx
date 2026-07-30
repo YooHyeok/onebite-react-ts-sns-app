@@ -4,6 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel";
 
 function Shadcn() {
   return (
@@ -32,6 +39,20 @@ function Shadcn() {
       >
         sonner 버튼
       </Button>
+      <Carousel className="mx-10">
+        <CarouselContent>
+          <CarouselItem className="basis-1/3">1</CarouselItem>{" "}
+          {/* basis-1/3 클래스를 통해 한 줄에 여러 아이템을 보이도록 설정 : 현재 너비의 3분의 1만큼 차지 */}
+          {/* 실제 flex-basis: calc(1/3 * 100%) = 33.3333% 로 적용됨. */}
+          {/* flex-basis: flex 아이템의 크기를 설정하는 옵션 */}
+          <CarouselItem className="basis-1/3">2</CarouselItem>{" "}
+          <CarouselItem className="basis-1/3">3</CarouselItem>
+          <CarouselItem className="basis-1/3">4</CarouselItem>
+          <CarouselItem className="basis-1/3">5</CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 }
