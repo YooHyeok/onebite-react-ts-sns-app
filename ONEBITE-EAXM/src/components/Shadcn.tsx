@@ -10,7 +10,12 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel";
+} from "@/components/ui/carousel";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 function Shadcn() {
   return (
@@ -53,6 +58,16 @@ function Shadcn() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
+      <Popover>
+        <PopoverTrigger>Open</PopoverTrigger>
+        <PopoverTrigger asChild>
+          {/* asChild: PopoverTrigger 컴포넌트가 자체적으로 새로운 버튼을 생성하지 않고 자식 요소로 전달된 컴포넌트를 그대로 트리거 역할로 사용하게 해주는 설정. 
+          생략할 경우 PopoverTrigger 버튼이 렌더링 되고 자식 요소로 구성한 태그는 아무런 동작을 하지 않는 상태로 생성된다. */}
+          {/* <Button>asChild</Button> */}
+          <div>asChild</div>
+        </PopoverTrigger>
+        <PopoverContent>Content!</PopoverContent>
+      </Popover>
     </div>
   );
 }
