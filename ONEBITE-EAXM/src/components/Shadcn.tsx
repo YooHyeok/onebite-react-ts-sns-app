@@ -16,6 +16,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function Shadcn() {
   return (
@@ -67,6 +75,32 @@ function Shadcn() {
           <div>asChild</div>
         </PopoverTrigger>
         <PopoverContent>Content!</PopoverContent>
+      </Popover>
+
+      <Dialog>
+        <DialogTrigger>Open Dialog</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Title</DialogTitle>
+            <DialogDescription>Description</DialogDescription>
+          </DialogHeader>
+          <div>Body</div>
+        </DialogContent>
+      </Dialog>
+      {/* open props로 boolean값을 전달하여 원하는 타이밍에 Dialog나 Popover 렌더링 제어 가능 */}
+      <Dialog open={true}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Title</DialogTitle>
+            <DialogDescription>Description</DialogDescription>
+          </DialogHeader>
+          <div>Open Dialog true</div>
+        </DialogContent>
+      </Dialog>
+      <Popover open={true}>
+        {/* Popover는 PopoverContent가 표시될 위치의 기준점인 PopoverTrigger 또는 PopoverAnchor가 필요하다. */}
+        <PopoverTrigger>Open</PopoverTrigger>
+        <PopoverContent>Open Popover true!</PopoverContent>
       </Popover>
     </div>
   );
