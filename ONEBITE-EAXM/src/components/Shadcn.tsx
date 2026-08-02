@@ -24,6 +24,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 function Shadcn() {
   return (
@@ -88,7 +96,7 @@ function Shadcn() {
         </DialogContent>
       </Dialog>
       {/* open props로 boolean값을 전달하여 원하는 타이밍에 Dialog나 Popover 렌더링 제어 가능 */}
-      <Dialog open={true}>
+      <Dialog open={false}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Title</DialogTitle>
@@ -97,11 +105,27 @@ function Shadcn() {
           <div>Open Dialog true</div>
         </DialogContent>
       </Dialog>
-      <Popover open={true}>
+      <Popover open={false}>
         {/* Popover는 PopoverContent가 표시될 위치의 기준점인 PopoverTrigger 또는 PopoverAnchor가 필요하다. */}
         <PopoverTrigger>Open</PopoverTrigger>
         <PopoverContent>Open Popover true!</PopoverContent>
       </Popover>
+
+      <AlertDialog>
+        <AlertDialogTrigger>Open Alert Dialog</AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogTitle>Title</AlertDialogTitle>
+          <div>body</div>
+          <div>
+            <AlertDialogAction onClick={() => console.log("Action!")}>
+              Action
+            </AlertDialogAction>
+            <AlertDialogCancel onClick={() => console.log("Cancel!")}>
+              Cancel
+            </AlertDialogCancel>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
