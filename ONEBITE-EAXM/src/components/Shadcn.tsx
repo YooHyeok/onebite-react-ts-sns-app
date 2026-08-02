@@ -33,6 +33,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+/* shadcn ui는 기본적으로 설치와 동시에 Lucide라는 아이콘 팩을 함께 제공하고 있다.  
+    별도의 아이콘 라이브러리를 이용하지 않아도 기본적인 아이콘을 lucide-react로 부터 불러오면 된다.  
+    [https://lucide.dev/icons](lucide-react icons)
+*/
+import { ChefHat } from "lucide-react";
+
 function Shadcn() {
   return (
     <div className="p-5">
@@ -60,13 +66,14 @@ function Shadcn() {
       >
         sonner 버튼
       </Button>
+      {/* [carousel] */}
       <Carousel className="mx-10">
         <CarouselContent>
-          <CarouselItem className="basis-1/3">1</CarouselItem>{" "}
+          <CarouselItem className="basis-1/3">1</CarouselItem>
           {/* basis-1/3 클래스를 통해 한 줄에 여러 아이템을 보이도록 설정 : 현재 너비의 3분의 1만큼 차지 */}
           {/* 실제 flex-basis: calc(1/3 * 100%) = 33.3333% 로 적용됨. */}
           {/* flex-basis: flex 아이템의 크기를 설정하는 옵션 */}
-          <CarouselItem className="basis-1/3">2</CarouselItem>{" "}
+          <CarouselItem className="basis-1/3">2</CarouselItem>
           <CarouselItem className="basis-1/3">3</CarouselItem>
           <CarouselItem className="basis-1/3">4</CarouselItem>
           <CarouselItem className="basis-1/3">5</CarouselItem>
@@ -74,6 +81,7 @@ function Shadcn() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
+      {/* [popover] */}
       <Popover>
         <PopoverTrigger>Open</PopoverTrigger>
         <PopoverTrigger asChild>
@@ -84,7 +92,7 @@ function Shadcn() {
         </PopoverTrigger>
         <PopoverContent>Content!</PopoverContent>
       </Popover>
-
+      {/* [dialog] */}
       <Dialog>
         <DialogTrigger>Open Dialog</DialogTrigger>
         <DialogContent>
@@ -110,7 +118,7 @@ function Shadcn() {
         <PopoverTrigger>Open</PopoverTrigger>
         <PopoverContent>Open Popover true!</PopoverContent>
       </Popover>
-
+      {/* [alert-dialog] */}
       <AlertDialog>
         <AlertDialogTrigger>Open Alert Dialog</AlertDialogTrigger>
         <AlertDialogContent>
@@ -126,6 +134,10 @@ function Shadcn() {
           </div>
         </AlertDialogContent>
       </AlertDialog>
+      {/* lucide-react icon */}
+      <ChefHat />
+      <ChefHat className="h-10 w-10 fill-red-500" />
+      {/* SVG 형태로 렌더링 되기 때문에 svg 태그에 적용할 수 있는 tailwindcss 클래스, 스타일들을 적용할 수 있다. */}
     </div>
   );
 }
