@@ -1,15 +1,19 @@
 import "./App.css";
 import Tailwind from "@/components/tailwind/Tailwind";
 import Shadcn from "@/components/Shadcn";
-
-const isActive = true;
+import { Route, Routes } from "react-router";
 
 function App() {
   return (
-    <div>
-      {/* <Tailwind /> */}
+    /* <div>
+      <Tailwind />
       <Shadcn />
-    </div>
+    </div> */
+    <Routes>
+      <Route path="/" element={<div>HOME</div>} />
+      <Route path="/sign-in" element={<div>SignIn</div>} />
+      <Route path="/sign-up" element={<div>SignUp</div>} />
+    </Routes>
   );
 }
 
