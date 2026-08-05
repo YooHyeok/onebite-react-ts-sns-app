@@ -44,7 +44,7 @@ function Shadcn() {
 export default Shadcn;
 ```
 
-![alt text](variant.gif)
+![alt text](assets/variant.gif)
 
 <br>
 
@@ -181,7 +181,7 @@ export default Shadcn;
 ## 1) carousel
 이미지 슬라이드 등에 주로 활용되는 컴포넌트이다.  
 
-![alt text](image-8.png)
+![alt text](assets/image-8.png)
 
 아래 명령을 통해 설치한다.  
 ```bash
@@ -259,7 +259,7 @@ Tailwind CSS의 mx-10을 적용하여 좌우에 2.5rem(40px)의 여백을 확보
 ## 2) popover
 버튼의 하단에 조그만 창이 출력되며, 창 바깥을 클릭하면 닫힌다.  
 
-![alt text](image-7.png)
+![alt text](assets/image-7.png)
 
 사용자 메뉴 같은 프로필 사진을 클릭하면 로그아웃, 설정 등으로 이동할 수 있게 해주는 드롭다운 형태의 UI를 표현할 때 활용된다.  
 
@@ -328,7 +328,7 @@ export default Shadcn;
 모달이라고도 불리우는 컴포넌트이다.  
 버튼을 누르면 모달 형태의 Dialog가 열리고, 바깥을 누르면 닫힌다.  
 
-![alt text](image-5.png)
+![alt text](assets/image-5.png)
 
 Popover 컴포넌트와 동일하게 컴파운드 컴포넌트 패턴이며, Trigger역할을 해주는 하위 컴포넌트가 필요하다.  
 
@@ -436,7 +436,7 @@ open props로 boolean값을 전달하여 원하는 타이밍에 Dialog나 Popove
 브라우저 순기능인 confirm과 같이 확인/취소 기능의 버튼을 추가할 수 있는 Dialog이다.  
 확인/취소 버튼에 onClick 이벤트를 등록하여 활용 가능하다.  
 
-![alt text](image-4.png)
+![alt text](assets/image-4.png)
 
 아래 명령을 통해 설치한다.  
 ```bash
@@ -510,13 +510,13 @@ npx shadcn@latest add icon
 
   export default Shadcn;
   ```
-  ![alt text](image-3.png)  
+  ![alt text](assets/image-3.png)  
 
 
 
 SVG 형태로 렌더링 되기 때문에 svg 태그에 적용할 수 있는 tailwindcss 클래스, 스타일들을 적용할 수 있다.
 
-![alt text](image-2.png)
+![alt text](assets/image-2.png)
 
 ```tsx
 <ChefHat className="h-10 w-10 fill-red-500" />
