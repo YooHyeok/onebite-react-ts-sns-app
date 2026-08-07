@@ -5,6 +5,7 @@ import { Outlet, Route, Routes } from "react-router";
 import IndexPage from "@/pages/index-page";
 import SignInPage from "@/pages/sign-in-page";
 import SignUpPage from "@/pages/sign-up-page";
+import CounterPage from "@/pages/counter-page";
 
 function AuthLayout() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/" element={<IndexPage />} />
       {/* <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} /> */}
+      <Route path="/counter" element={<CounterPage />}></Route>
       <Route element={<AuthLayout />}>
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
