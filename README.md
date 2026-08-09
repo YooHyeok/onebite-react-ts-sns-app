@@ -3,8 +3,9 @@
 ## 목차
 1. 프로젝트 초기화
 2. Tailwind CSS
-3. Zustand
-4. Transtack Query
+3. React Router
+4. Zustand
+5. TanStack Query
 
 <hr>
 <br>

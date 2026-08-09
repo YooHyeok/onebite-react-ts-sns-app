@@ -131,8 +131,8 @@ tsconfig.app.json과 tsconfig.node.json 2개의 설정파일을 각각 참조하
 VSCode가 사용하는 타입스크립트의 버전과 실제 리액트 프로젝트가 사용하는 타입스크립트의 버전이 다를 경우 오류가 발생할 수 있다.  
 1. `Ctrl + Shift + P` (~.config.json 파일에서 입력해야함.)
 2. select typescript version 검색 및 선택
-    ![alt text](image.png)
+    ![alt text](assets/image.png)
 3. Vscode 버전과 작업영역 버전 중 작업영역 버전 선택.
 4. `Ctrl + Shift + P`
 5. restart ts server 검색 및 선택
-    ![alt text](image-1.png)
+    ![alt text](assets/image-1.png)

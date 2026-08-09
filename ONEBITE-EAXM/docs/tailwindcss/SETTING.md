@@ -125,12 +125,12 @@ deprecated 확장이 설치되어 있으면 VS Code의 `editor.defaultFormatter`
 따라서 기존 deprecated 확장은 사용하지 않고 `esbenp.prettier-vscode`를 설치한 뒤 아래처럼 설정한다.
 
 1. **vscode extension에서 `esbenp.prettier` 검색**
-   ![alt text](image-1.png)
+   ![alt text](assets/image-1.png)
 
 - 우측 링크에 접속하여 새로 설치.
 
 2. **VSCode Formatter 설정**
-   ![alt text](image-2.png)
+   ![alt text](assets/image-2.png)
 
 - 혹은
 
