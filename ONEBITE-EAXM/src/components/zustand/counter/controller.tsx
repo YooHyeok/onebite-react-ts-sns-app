@@ -4,7 +4,7 @@ import {
   useDecreaseCount,
   useIncreaseCount,
   useCountAction,
-} from "@/store/count";
+} from "@/store/count/basic";
 
 export default function Controller() {
   // const { increase, decrease } = useCountStore();

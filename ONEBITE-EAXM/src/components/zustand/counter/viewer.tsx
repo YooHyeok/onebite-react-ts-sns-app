@@ -1,4 +1,4 @@
-import { useCount, useCountStore } from "@/store/count";
+import { useCount, useCountStore } from "@/store/count/basic";
 
 export default function Viewer() {
   // const { count } = useCountStore();
