@@ -1,5 +1,6 @@
 // import { useCount, useCountStore } from "@/store/count/basic";
-import { useCount } from "@/store/count/middleware/combine";
+// import { useCount } from "@/store/count/middleware/combine";
+import { useCount } from "@/store/count/middleware/immer";
 
 export default function Viewer() {
   // const { count } = useCountStore();
