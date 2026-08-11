@@ -1,12 +1,10 @@
 import { Button } from "@/components/ui/button";
-/* import {
-  useCountStore,
+import {
+  /* useCountStore,
   useDecreaseCount,
-  useIncreaseCount,
+  useIncreaseCount, */
   useCountAction,
-} from "@/store/count/basic"; */
-// import { useCountAction } from "@/store/count/middleware/combine";
-import { useCountAction } from "@/store/count/middleware/immer";
+} from "@/store/count/basic";
 
 export default function Controller() {
   // const { increase, decrease } = useCountStore();
