@@ -2,8 +2,10 @@
 import Viewer from "@/components/zustand/counter/basic/viewer"; */
 /* import Controller from "@/components/zustand/counter/middleware/combine/controller";
 import Viewer from "@/components/zustand/counter/middleware/combine/viewer"; */
-import Controller from "@/components/zustand/counter/middleware/immer/controller";
-import Viewer from "@/components/zustand/counter/middleware/immer/viewer";
+/* import Controller from "@/components/zustand/counter/middleware/immer/controller";
+import Viewer from "@/components/zustand/counter/middleware/immer/viewer"; */
+import Controller from "@/components/zustand/counter/middleware/subscribeWithSelector/controller";
+import Viewer from "@/components/zustand/counter/middleware/subscribeWithSelector/viewer";
 
 export default function CounterPage() {
   return (
