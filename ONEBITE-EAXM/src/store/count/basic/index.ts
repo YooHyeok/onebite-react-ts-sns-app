@@ -33,12 +33,14 @@ export const useCountStore = create<Store>((set, get) => ({
   /* [2. Actions Property로 Wrapping] */
   actions: {
     increase: () => {// action
+      console.log("basic increase")
       // 함수형 업데이트 : return 값으로 store를 업데이트 시킨다. 장점: 콜백함수의 매개변수로 현재 스토어의 값이 제공된다.
-      set ((store) => ({ 
+      set ((store) => ({
           count: store.count + 1
       }))
     }, 
     decrease: () => { // action
+      console.log("basic decrease")
       set ((store) => ({ 
           count: store.count - 1
       }))

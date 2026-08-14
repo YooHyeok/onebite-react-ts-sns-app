@@ -44,19 +44,20 @@ export const useCountStore = create(
 )
 
 useCountStore.subscribe(
-  (store) => store.count, // selector
+  (store) => store.count,
   (count, prevCount) => {
-    console.log(count, prevCount) // listener : count 값이 변경되면 로그 출력
-    /* 함수 내부에서는 현재 store를 불러오거나 현재 store의 특정 값을 업데이트 하는것또한 가능하다. */
-    const store = useCountStore.getState() // store 불러오기
-    useCountStore.setState((store) => ({})) // store 변경하기 : 현재 구독중인 state를 변경할경우 subscribe가 계속 호출되므로, 무한루프 발생.
+
+    console.log(count, prevCount)
+    
+    const store = useCountStore.getState()
+    useCountStore.setState((store) => ({}))
   })
 
 
 /**
- * 
+ * persist 미들웨어는 다른 미들웨어와 서로 의존하지 않으므로, 단독으로 사용할 수 있다.  
+ * create만으로 순수하게 Store 정의하는것과 동일하게 Store 타입을 지정하되, persist함수의 인자로 전달되도록 persist의 호출이 create에 전달할 store 반환 콜백을 감싸도록 선언하면 된다.  
  */
-
 type Store = {
   count : number;
   actions: {
@@ -69,16 +70,16 @@ create<Store>()(
   persist((set) => ({
     count: 0,
     actions: {
-      increase: () =>
-        set((state) => ({
-          count: state.count + 1,
-        })),
-
-      decrease: () =>
-        set((state) => ({
-          count: state.count - 1,
-        })),
+      increase: () => {
+        console.log("persist increase")
+        set((state) => ({ count: state.count + 1 }))
       },
+
+      decrease: () =>{
+        console.log("persist decrease")
+        set((state) => ({ count: state.count - 1 }))
+        },
+      }
     }),
     {
       name: 'countStore',

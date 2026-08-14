@@ -17,11 +17,13 @@ export const useCountStore = create(
   combine({ count:0 }, (set, get) => ({
     actions: {
       increase: () => {
+        console.log("combine increase")
         set ((state) => ({ 
-            count: state.count + 1
+          count: state.count + 1
         }))
       }, 
       decrease: () => {
+        console.log("combine decrease")
         set ((state) => ({ 
             count: state.count - 1
         }))

@@ -13,11 +13,13 @@ export const useCountStore = create(
       combine({ count:0 }, (set, get) => ({
         actions: {
           increase: () => {
+            console.log("subscribeWithSelector increase")
             set((state) => {
               state.count += 1;
             })
           }, 
           decrease: () => {
+            console.log("subscribeWithSelector decrease")
             set((state) => {
               state.count -= 1;
             })
