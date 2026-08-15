@@ -2,10 +2,10 @@ import "./App.css";
 import Tailwind from "@/components/tailwind/Tailwind";
 import Shadcn from "@/components/Shadcn";
 import { Outlet, Route, Routes } from "react-router";
-import IndexPage from "@/pages/index-page";
-import SignInPage from "@/pages/sign-in-page";
-import SignUpPage from "@/pages/sign-up-page";
-import CounterPage from "@/pages/counter-page";
+import IndexPage from "@/pages/basic/index-page";
+import SignInPage from "@/pages/basic/sign-in-page";
+import SignUpPage from "@/pages/basic/sign-up-page";
+import CounterPage from "@/pages/zustand/counter-page";
 
 function AuthLayout() {
   return (
