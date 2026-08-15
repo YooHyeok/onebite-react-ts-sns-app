@@ -66,7 +66,7 @@ const useCountStore = create((set, get) => ({
 
 
 
-# _**Zustand 기본 사용법 1**_
+# _**Zustand 기본 사용법**_
 <details>
 <summary>접기/펼치기</summary>
 <br>
@@ -488,6 +488,354 @@ Controller에서 여러 개의 액션 Hook을 호출하는 코드를 `useCountAc
 | Custom Hook | Hook 내부에서 선택한 값 | 리렌더링 생략 | Store 구조와 구독 방식을 캡슐화 |
 
 컴포넌트의 리렌더링 여부는 JSX에서 Store 값을 실제로 출력하는지가 아니라, 컴포넌트가 구독한 selector의 반환값이 변경되었는지에 따라 결정된다.
+
+</details>
+<br>
+
+
+# _**Zustand 미들웨어**_
+
+### 목차
+1. combine
+2. immer
+3. subscribeWithSelector
+4. persist
+5. devtools
+
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
+Zustand 미들웨어는 Store 생성 함수를 감싸서 타입 추론, 불변성 관리, 선택적 구독, 스토리지 저장, 개발자 도구 연동 같은 기능을 추가한다.
+각 미들웨어는 대부분 서로 독립적이므로 필요한 기능만 단독으로 사용하거나 여러 미들웨어를 중첩하여 조합할 수 있다.
+
+```ts
+create(
+  devtools(
+    persist(
+      subscribeWithSelector(
+        immer(
+          combine(state, actions)
+        )
+      ),
+      persistOptions
+    ),
+    devtoolsOptions
+  )
+)
+```
+
+바깥쪽 미들웨어는 안쪽 미들웨어가 반환한 Store 생성 함수를 다시 감싼다.
+아래 예제는 기능을 단계적으로 추가하기 위해 여러 미들웨어를 함께 사용하지만, 앞 단계의 미들웨어가 반드시 필요한 의존 관계를 의미하지는 않는다.
+
+<br>
+
+## combine: State와 Action 결합 및 타입 추론
+
+`combine`은 첫 번째 인수로 초기 State 객체를 받고, 두 번째 인수로 Action 객체를 반환하는 생성 함수를 받아 하나의 Store로 결합한다.
+
+- [combine.ts](../../src/store/count/middleware/combine.ts)
+  ```ts
+  import { create } from "zustand";
+  import { combine } from "zustand/middleware";
+
+  export const useCountStore = create(
+    combine({ count: 0 }, (set) => ({
+      actions: {
+        increase: () =>
+          set((state) => ({ count: state.count + 1 })),
+        decrease: () =>
+          set((state) => ({ count: state.count - 1 })),
+      },
+    })),
+  );
+  ```
+
+일반적인 `create<Store>()(...)` 방식과 달리 Store 타입을 직접 선언하지 않아도 초기 State와 Action 반환값을 바탕으로 전체 Store 타입이 자동 추론된다.
+
+다만 `combine` 내부의 `get()` 반환 타입과 `set()`의 콜백 매개변수 타입은 첫 번째 인수로 전달한 State만 포함하는 것으로 추론된다.
+
+```ts
+combine({ count: 0 }, (set, get) => {
+  get().count;              // 타입에 존재
+  get().actions.increase(); // 런타임에는 존재하지만 타입에는 표시되지 않음
+
+  return { /* actions */ };
+});
+```
+
+이는 타입 추론 범위에 관한 제한이며 실제 런타임 Store에서 Action이 사라지는 것은 아니다.
+Action 안에서 다른 Action을 직접 조회하는 경우는 많지 않으므로 일반적인 사용에서는 큰 문제가 되지 않는다. 이 특성을 분명히 하기 위해 `set()` 콜백의 매개변수도 전체 Store를 뜻하는 `store`보다 `state`라고 표현할 수 있다.
+
+<br>
+
+## immer: 복잡한 State의 불변성 관리
+
+React와 Zustand의 State는 기존 객체를 직접 변경하는 대신 변경된 값을 포함한 새 객체를 반환하는 방식으로 업데이트해야 한다.
+
+```ts
+set((state) => ({ count: state.count + 1 }));
+```
+
+이러한 불변성 관리는 State 구조가 여러 단계로 중첩될수록 업데이트 코드가 복잡해진다.
+`immer` 미들웨어를 적용하면 초안 State를 직접 수정하는 형태로 작성해도 Immer가 불변성을 유지한 새로운 State를 만들어 준다.
+
+- [immer.ts](../../src/store/count/middleware/immer.ts)
+  ```ts
+  import { create } from "zustand";
+  import { combine } from "zustand/middleware";
+  import { immer } from "zustand/middleware/immer";
+
+  export const useCountStore = create(
+    immer(
+      combine({ count: 0 }, (set) => ({
+        actions: {
+          increase: () =>
+            set((state) => {
+              state.count += 1;
+            }),
+          decrease: () =>
+            set((state) => {
+              state.count -= 1;
+            }),
+        },
+      })),
+    ),
+  );
+  ```
+
+`immer`와 `combine`은 서로 의존하지 않는다. 타입을 직접 지정하면 `immer`만 단독으로 사용할 수도 있다.
+
+```ts
+type Store = {
+  count: number;
+  actions: {
+    increase: () => void;
+    decrease: () => void;
+  };
+};
+
+const useCountStore = create<Store>()(
+  immer((set) => ({
+    count: 0,
+    actions: {
+      increase: () => set((state) => { state.count += 1; }),
+      decrease: () => set((state) => { state.count -= 1; }),
+    },
+  })),
+);
+```
+
+<br>
+
+## subscribeWithSelector: 특정 State 변화 구독
+
+기본 `subscribe`는 Store 전체의 변경을 구독한다. `subscribeWithSelector`를 적용하면 selector로 선택한 특정 값이 변경될 때만 listener를 실행할 수 있다.
+컴포넌트 바깥에서 State 변화에 따른 사이드 이펙트를 처리한다는 점에서 React의 `useEffect`와 비슷한 역할을 한다.
+
+예를 들어 인증 Store의 세션 값이 로그아웃 상태로 변경되었을 때 로그인 페이지로 이동시키는 작업 등에 활용할 수 있다.
+
+- [subscribeWithSelector.ts](../../src/store/count/middleware/subscribeWithSelector.ts)
+  ```ts
+  export const useCountStore = create(
+    subscribeWithSelector(
+      immer(
+        combine({ count: 0 }, (set) => ({
+          actions: {
+            increase: () => set((state) => { state.count += 1; }),
+            decrease: () => set((state) => { state.count -= 1; }),
+          },
+        })),
+      ),
+    ),
+  );
+
+  useCountStore.subscribe(
+    (store) => store.count,
+    (count, prevCount) => {
+      console.log(count, prevCount);
+    },
+  );
+  ```
+
+`subscribe`의 첫 번째 인수는 구독할 값을 고르는 selector이고, 두 번째 인수는 선택한 값이 변경될 때 실행되는 listener이다.
+
+```text
+selector: (store) => store.count
+listener 첫 번째 인수: 변경된 최신 count
+listener 두 번째 인수: 변경 전 count
+```
+
+listener 안에서도 `useCountStore.getState()`로 현재 Store를 읽고 `useCountStore.setState()`로 상태를 변경할 수 있다.
+단, 현재 구독 중인 값을 listener에서 다시 변경하면 listener가 연속으로 호출되어 무한 루프가 발생할 수 있으므로 주의해야 한다.
+
+`subscribeWithSelector` 역시 다른 미들웨어에 의존하지 않으며 Store 타입을 직접 지정하여 단독으로 사용할 수 있다.
+
+```ts
+const useCountStore = create<Store>()(
+  subscribeWithSelector((set) => ({
+    count: 0,
+    actions: {
+      increase: () =>
+        set((state) => ({ count: state.count + 1 })),
+      decrease: () =>
+        set((state) => ({ count: state.count - 1 })),
+    },
+  })),
+);
+```
+
+<br>
+
+## persist: 브라우저 스토리지에 State 보관
+
+`persist`는 Store의 값을 브라우저 스토리지에 저장하고, 새로고침 후 저장된 값을 다시 읽어 Store에 적용하는 미들웨어이다.
+첫 번째 인수로 Store 생성 함수를 받고 두 번째 인수로 저장 방식을 설정하는 옵션 객체를 받는다.
+
+- [persist.ts](../../src/store/count/middleware/persist.ts)
+  ```ts
+  export const useCountStore = create(
+    persist(
+      subscribeWithSelector(
+        immer(
+          combine({ count: 0 }, (set) => ({
+            actions: {
+              increase: () => set((state) => { state.count += 1; }),
+              decrease: () => set((state) => { state.count -= 1; }),
+            },
+          })),
+        ),
+      ),
+      {
+        name: "countStore",
+        partialize: (store) => ({ count: store.count }),
+        storage: createJSONStorage(() => sessionStorage),
+      },
+    ),
+  );
+  ```
+
+주요 옵션의 역할은 다음과 같다.
+
+| 옵션 | 역할 |
+| --- | --- |
+| `name` | 스토리지에 저장할 때 사용할 key 이름 |
+| `partialize` | Store 중 실제로 저장할 값만 선택 |
+| `storage` | 사용할 스토리지 지정 |
+
+`storage`를 생략하면 기본적으로 `localStorage`를 사용한다. 예제에서는 브라우저 탭의 세션 동안 값을 유지하기 위해 `createJSONStorage(() => sessionStorage)`를 지정한다.
+
+브라우저 스토리지에는 Store가 JSON으로 직렬화되어 저장된다. 함수는 실행 컨텍스트, 스코프 체인, 클로저 같은 정보를 가지므로 JSON으로 직렬화할 수 없다.
+따라서 `actions`처럼 함수를 포함한 객체를 저장 대상에 넣지 말고, `partialize`를 사용해 `count`처럼 복원할 State만 명시하는 것이 안전하다.
+
+```ts
+partialize: (store) => ({ count: store.count });
+```
+
+`persist`도 다른 미들웨어에 의존하지 않으며 단독으로 사용할 수 있다.
+
+```ts
+const useCountStore = create<Store>()(
+  persist(
+    (set) => ({
+      count: 0,
+      actions: {
+        increase: () =>
+          set((state) => ({ count: state.count + 1 })),
+        decrease: () =>
+          set((state) => ({ count: state.count - 1 })),
+      },
+    }),
+    {
+      name: "countStore",
+      partialize: (store) => ({ count: store.count }),
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+);
+```
+
+<br>
+
+## devtools: Redux DevTools 연동
+
+`devtools`는 Zustand Store의 State와 변경 이력을 Redux DevTools에서 확인할 수 있게 해주는 미들웨어이다.
+`persist`에 포함된 기능이 아니며 다른 미들웨어에 의존하지 않는다. 두 기능이 모두 필요할 때만 `devtools(persist(...))`처럼 함께 조합한다.
+
+- [Redux DevTools 크롬 확장 프로그램 설치](https://chromewebstore.google.com/detail/lmhkpmbekcpmknklioeibfkpmmfibljd)
+- [devtools.ts](../../src/store/count/middleware/devtools.ts)
+  ```ts
+  export const useCountStore = create(
+    devtools(
+      persist(
+        subscribeWithSelector(
+          immer(
+            combine({ count: 0 }, (set) => ({
+              actions: {
+                increase: () => set((state) => { state.count += 1; }),
+                decrease: () => set((state) => { state.count -= 1; }),
+              },
+            })),
+          ),
+        ),
+        {
+          name: "countStore",
+          partialize: (store) => ({ count: store.count }),
+          storage: createJSONStorage(() => sessionStorage),
+        },
+      ),
+      {
+        name: "countStore",
+      },
+    ),
+  );
+  ```
+
+Redux DevTools 설치 후 다음 순서로 Store의 변화를 확인할 수 있다.
+
+```text
+F12 개발자 도구
+→ Redux 탭
+→ devtools 옵션의 name으로 등록된 instance 선택
+→ State 탭 선택
+→ 브라우저에서 액션 실행 후 상태 변화 확인
+```
+
+`persist`의 `name`은 브라우저 스토리지의 key를 의미하고, `devtools`의 `name`은 Redux DevTools에서 구분할 Store instance 이름을 의미한다. 이름이 같더라도 서로 다른 옵션이다.
+
+`devtools`만 필요하다면 다음과 같이 단독으로 적용할 수 있다.
+
+```ts
+const useCountStore = create<Store>()(
+  devtools(
+    (set) => ({
+      count: 0,
+      actions: {
+        increase: () =>
+          set((state) => ({ count: state.count + 1 })),
+        decrease: () =>
+          set((state) => ({ count: state.count - 1 })),
+      },
+    }),
+    { name: "countStore" },
+  ),
+);
+```
+
+<br>
+
+## 미들웨어 역할 정리
+
+| 미들웨어 | 역할 | 단독 사용 |
+| --- | --- | --- |
+| `combine` | 초기 State와 Action을 결합하고 타입 추론 | 가능 |
+| `immer` | 직접 수정 문법으로 불변성 업데이트 | 가능 |
+| `subscribeWithSelector` | selector로 선택한 값의 변화 구독 | 가능 |
+| `persist` | Store State를 브라우저 스토리지에 저장·복원 | 가능 |
+| `devtools` | Redux DevTools에서 상태와 변경 이력 확인 | 가능 |
+
+미들웨어를 함께 사용한 예제는 기능을 누적하기 위한 조합일 뿐, `devtools`가 `persist`에 종속되는 것처럼 서로 반드시 함께 사용해야 한다는 의미는 아니다.
+
 
 </details>
 <br>
