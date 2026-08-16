@@ -2,10 +2,11 @@ import "./App.css";
 import Tailwind from "@/components/tailwind/Tailwind";
 import Shadcn from "@/components/Shadcn";
 import { Outlet, Route, Routes } from "react-router";
-import IndexPage from "@/pages/basic/index-page";
-import SignInPage from "@/pages/basic/sign-in-page";
-import SignUpPage from "@/pages/basic/sign-up-page";
+import IndexPage from "@/pages/router-basic/index-page";
+import SignInPage from "@/pages/router-basic/sign-in-page";
+import SignUpPage from "@/pages/router-basic/sign-up-page";
 import CounterPage from "@/pages/zustand/counter-page";
+import TodoListPage from "@/pages/todo-list/todo-list-page";
 
 function AuthLayout() {
   return (
@@ -30,6 +31,7 @@ function App() {
       {/* <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} /> */}
       <Route path="/counter" element={<CounterPage />}></Route>
+      <Route path="/todolist" element={<TodoListPage />}></Route>
       <Route element={<AuthLayout />}>
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
