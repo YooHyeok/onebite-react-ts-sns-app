@@ -11,4 +11,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: { 
+    watch: {
+      ignored: ["**/server/**"] // vite가 서버폴더 아래의 파일에 변화가 발생하더라도 React App을 리렌더링 시키는 등의 불필요한 동작을 방지.
+    }
+  }
 });
