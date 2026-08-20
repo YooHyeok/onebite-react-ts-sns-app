@@ -3,8 +3,9 @@ import TodoEditor from "@/components/tanstack-query/todo-editor";
 import TodoItem from "@/pages/tanstack-query/todo-item";
 // import type { Todo } from "@/types/todo-list";
 // import { API_URL } from "@/lib/constants";
-import { fetchTodos } from "@/api/fetch-todos";
-import { useQuery } from "@tanstack/react-query";
+// import { fetchTodos } from "@/api/fetch-todos";
+// import { useQuery } from "@tanstack/react-query";
+import { useTodosData } from "@/hooks/quries/use-todos.data";
 
 export default function TodoListPage() {
   /* 순수 React 방식 */
@@ -29,7 +30,7 @@ export default function TodoListPage() {
   }, []); */
 
   /* tanstack query 방식 */
-  const {
+  /* const {
     data: todos,
     isLoading,
     error,
@@ -38,7 +39,10 @@ export default function TodoListPage() {
     queryFn: fetchTodos,
     queryKey: ["todos"],
     // retry: 0 // 요청 실패시 재 요청 시도 최대 횟수 (기본 3)
-  });
+  }); */
+
+  /* tanstack query 모듈화 */
+  const { data: todos, isLoading, error } = useTodosData();
 
   if (error) return <div>오류가 발생했습니다.</div>;
   if (isLoading) return <div>로딩 중 입니다 ...</div>;
