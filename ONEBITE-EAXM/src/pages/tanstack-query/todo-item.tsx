@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { Todo } from "@/types/todo-list";
+import { Link } from "react-router";
 
 export default function TodoItem({ id, content }: Todo) {
   console.count(`TodoItem ${id}`);
@@ -8,7 +9,7 @@ export default function TodoItem({ id, content }: Todo) {
   };
   return (
     <div className="flex items-center justify-between border p-2">
-      {content}
+      <Link to={`/todolist/${id}`}>{content}</Link>
       <Button onClick={handleDeleteClick} variant={"destructive"}>
         삭제
       </Button>
