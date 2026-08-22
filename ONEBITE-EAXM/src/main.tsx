@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router";
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 /**
  * TanstackQuery를 이용해 관리하는 모든 서버 상태를 보관하는 일종의 저장소 즉, 스토어
@@ -14,6 +15,7 @@ const queryClient = new QueryClient(); //
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       <App />
     </QueryClientProvider>
   </BrowserRouter>,
