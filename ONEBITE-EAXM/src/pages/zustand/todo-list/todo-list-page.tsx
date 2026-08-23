@@ -1,5 +1,5 @@
 import TodoEditor from "@/components/todo-list/todo-editor";
-import TodoItem from "@/pages/todo-list/todo-item";
+import TodoItem from "@/pages/zustand/todo-list/todo-item";
 import { useTodos } from "@/store/todo-list/todos";
 
 /* const dummyTodos = [
