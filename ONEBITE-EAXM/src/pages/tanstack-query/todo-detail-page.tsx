@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 export default function TodoDetailPage() {
   const params = useParams();
-  const id = params.id as unknown as number;
+  const id = params.id as string;
 
   const { data, isLoading, error } = useTodoDataById(id);
 
