@@ -5,6 +5,7 @@ export function useTodoDataById(id: number) {
   return useQuery({
     queryFn: () => fetchTodoById(id),
     queryKey: ["todos", id],
-    staleTime: 5000
+    staleTime: 5000,
+    gcTime: 5000,
   })
 }
