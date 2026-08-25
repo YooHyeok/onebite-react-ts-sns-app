@@ -1,5 +1,5 @@
 import { createTodo } from "@/api/create-todo";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 /**
  * useMutation:
@@ -10,13 +10,20 @@ import { useMutation } from "@tanstack/react-query";
  *
  */
 export function useCreateTodoMutation() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createTodo,
     /* 이벤트 핸들러 */
     onMutate: /*요청 발송 시점*/ () => {},
     onSettled: /*요청 종료 시점*/ () => {},
     onSuccess: () => {
-      window.location.reload();
+      /**
+       * todos 이름을 갖는 Tanstack Query 캐시 데이터를 무효화 한다.
+       * queryClient: 서버 상태와 관련된 모든 데이터를 보관하는 저장소로 cache 데이터와 state들이 모두 보관되는 객체
+       */
+      queryClient.invalidateQueries({
+        queryKey: ["todos"]
+      })
     },
     onError: (error) => {
       window.alert(error.message);
