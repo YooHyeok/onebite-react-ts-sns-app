@@ -8,8 +8,10 @@ export default function useUpdateTodoMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: updateTodo,
-    onMutate: (updatedTodo) => { // onMutate: 비동기 요청이 시작되었을때 즉시 호출
+    onMutate: async (updatedTodo) => { // onMutate: 비동기 요청이 시작되었을때 즉시 호출
       console.log("[onMutate] 낙관적 업데이트")
+      /* 예외상황 2. 초기 요청에 대한 캐시 업데이트 이전에 캐시를 수정할경우, 초기 요청 완료시 수정된 캐시가 덮어씌워지게 되는 케이스 */
+      await queryClient.cancelQueries({queryKey: QUERY_KEYS.todo.list})
       const prevTodos = queryClient.getQueryData<Todo[]>(QUERY_KEYS.todo.list);
       queryClient.setQueryData<Todo[]>(QUERY_KEYS.todo.list, (prevTodos) => {
         if (!prevTodos) return []; // 수정을 하려고 했는데 이전 배열이 유효하지 않으면 데이터가 없는것과 같음.
