@@ -35,7 +35,7 @@ export function useCreateTodoMutation() {
        * QueryClient 캐시 저장소와 json-server는 서로 독립적. json-server에 먼저 저장하고 캐시 저장소에도 갱신함으로써 바로 반영됨.
        */
       queryClient.setQueryData<Todo[]>(QUERY_KEYS.todo.list, (prevTodos) => {
-        if(!prevTodos) return [newTodo];
+        if(!prevTodos) return [newTodo]; // 이전 데이터가 유효하지 않다면 데이터가 없었던것이므로 신규 추가된 목록으로 적용
         return [...prevTodos, newTodo]
       })
     },
