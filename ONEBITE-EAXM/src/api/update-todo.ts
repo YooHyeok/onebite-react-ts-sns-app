@@ -21,6 +21,6 @@ export async function updateTodo(todo: Partial<Todo> & { id: string }): Promise<
   return data;
 }
 
-updateTodo({id: "abc", isDone: false})
-updateTodo({id: "def", content: "메롱"})
+// updateTodo({id: "abc", isDone: false})
+// updateTodo({id: "def", content: "메롱"})
 // updateTodo({content: "메롱"}) // 타입 오류 발생
