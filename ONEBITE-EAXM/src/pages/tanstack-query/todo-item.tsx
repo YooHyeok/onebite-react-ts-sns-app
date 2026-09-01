@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useDeleteTodoMutation } from "@/hooks/mutations/use-delete-todo-mutation";
-import useUpdateTodoMutation from "@/hooks/mutations/use-update-todo-mutation";
+import { useUpdateTodoMutation } from "@/hooks/mutations/use-update-todo-mutation";
 import type { Todo } from "@/types/todo-list";
 import { Link } from "react-router";
 

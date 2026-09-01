@@ -1,10 +1,10 @@
 import { updateTodo } from "@/api/update-todo";
 import { QUERY_KEYS } from "@/lib/constants";
 import type { Todo } from "@/types/todo-list";
-import {  useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
-export default function useUpdateTodoMutation() {
+export function useUpdateTodoMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: updateTodo,

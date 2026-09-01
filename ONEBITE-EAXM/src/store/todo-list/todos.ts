@@ -16,7 +16,8 @@ const useTodosStore = create(
           set(state => {
             const item = {
               id: String(new Date().getTime()),
-              content: content
+              content: content,
+              isDone: false,
             }
             state.todos.push(item)/* 불변셩 관리 미들웨어인 immer 활용으로 push 메소드 사용 가능. */
           }) 
