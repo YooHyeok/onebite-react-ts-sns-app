@@ -42,7 +42,7 @@ export default function SignUpPage() {
       </div>
       <div>
         <Link className="text-muted-foreground hover:underline" to={"/sign-in"}>
-          이미 계정이 있다면 로그인
+          이미 계정이 있다면? 로그인
         </Link>
       </div>
     </div>
