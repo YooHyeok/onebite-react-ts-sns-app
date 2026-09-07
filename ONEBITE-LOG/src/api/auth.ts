@@ -1,5 +1,5 @@
 import supabase from "@/lib/supabase";
-import type { AuthResponse } from "@supabase/supabase-js";
+import type { AuthResponse, OAuthResponse, Provider } from "@supabase/supabase-js";
 
 export async function signUp({email, password}: {email: string, password: string}) {
   const { data, error }: AuthResponse = await supabase.auth.signUp({email, password})
@@ -12,4 +12,12 @@ export async function signInWithPassword({email, password}: {email: string, pass
   if (error) throw error
   return data;
 
+}
+
+export async function signInWithOAuth(provider: Provider) {
+  const { data, error }: OAuthResponse = await supabase.auth.signInWithOAuth({
+    provider
+  })
+  if (error) throw error
+  return data;
 }
