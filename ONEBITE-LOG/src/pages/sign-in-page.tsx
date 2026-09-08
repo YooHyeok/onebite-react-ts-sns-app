@@ -4,6 +4,7 @@ import { useSignInWithPassword } from "@/hooks/mutations/use-sign-in-with-passwo
 import { useSignInWithOAuth } from "@/hooks/mutations/use-sign-in-with-oauth";
 import { useState } from "react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 import gitHubLogo from "@/assets/github-mark.svg";
 
@@ -11,7 +12,16 @@ export default function SignInPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { mutate: signInWithPassword } = useSignInWithPassword();
+  const { mutate: signInWithPassword } = useSignInWithPassword({
+    onError: (error) => {
+      console.error(error);
+      // window.alert(error)
+      toast.error(error.message, {
+        position: "top-center",
+      });
+      setPassword("");
+    },
+  });
   const { mutate: signInWithOAuth } = useSignInWithOAuth();
 
   const handleSignInWithPasswordClick = () => {
