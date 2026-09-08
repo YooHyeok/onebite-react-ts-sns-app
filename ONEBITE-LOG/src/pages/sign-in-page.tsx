@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSignInWithPassword } from "@/hooks/mutations/use-sign-in";
+import { useSignInWithPassword } from "@/hooks/mutations/use-sign-in-with-password";
 import { useSignInWithOAuth } from "@/hooks/mutations/use-sign-in-with-oauth";
 import { useState } from "react";
 import { Link } from "react-router";
