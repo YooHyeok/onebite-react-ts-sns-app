@@ -25,7 +25,14 @@ export default function SignInPage() {
     },
   });
 
-  const { mutate: signInWithOAuth } = useSignInWithOAuth();
+  const { mutate: signInWithOAuth } = useSignInWithOAuth({
+    onError: (error) => {
+      const message = generageErrorMessage(error);
+      toast.error(message, {
+        position: "top-center",
+      });
+    },
+  });
 
   const handleSignInWithPasswordClick = () => {
     if (email.trim() === "") return;
