@@ -10,7 +10,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { mutate: signUp } = useSignUp({
+  const { mutate: signUp, isPending: isSignUpPending } = useSignUp({
     onError: (error) => {
       const message = generageErrorMessage(error); // 한국어 번역
       toast.error(message, {
@@ -30,6 +30,7 @@ export default function SignUpPage() {
       <div className="text-xl font-bold">회원가입</div>
       <div className="flex flex-col gap-2">
         <Input
+          disabled={isSignUpPending}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="py-6"
@@ -37,6 +38,7 @@ export default function SignUpPage() {
           placeholder="example@abc.com"
         />
         <Input
+          disabled={isSignUpPending}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="py-6"
@@ -45,7 +47,11 @@ export default function SignUpPage() {
         />
       </div>
       <div>
-        <Button onClick={handleSignUpClick} className="w-full">
+        <Button
+          disabled={isSignUpPending}
+          onClick={handleSignUpClick}
+          className="w-full"
+        >
           회원가입
         </Button>
       </div>
