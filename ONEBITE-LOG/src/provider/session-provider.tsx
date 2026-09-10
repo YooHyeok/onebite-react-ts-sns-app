@@ -1,3 +1,4 @@
+import GlobalLoader from "@/components/global-loader";
 import supabase from "@/lib/supabase";
 import { useIsSessionLoaded, useSetSession } from "@/store/session";
 import { useEffect, type ReactNode } from "react";
@@ -23,6 +24,6 @@ export default function SessionProvider({ children }: { children: ReactNode }) {
    * 이러한 초기 마운트 상황을 고려하지 않게 되면 실제로는 session 데이터가 존재하여 인증이 완료된 사용자라고 할지라도
    * 초기 상태에서는 로그인이 되지 않은 것으로 판단이 되므로 의도치 않은 동작이 발생할 수 있다.
    */
-  if (!isSessionLoaded) return <div>로딩 중...</div>;
+  if (!isSessionLoaded) return <GlobalLoader />;
   return children;
 }
