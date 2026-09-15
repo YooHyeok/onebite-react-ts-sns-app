@@ -35,3 +35,11 @@ export async function requestPasswordRestEmail(email: string) {
   if (error) throw error
   return data;
 }
+
+export async function updatePassword(password: string) {
+  const { data, error } = await supabase.auth.updateUser({
+    password
+  })
+  if (error) throw error
+  return data;
+}
