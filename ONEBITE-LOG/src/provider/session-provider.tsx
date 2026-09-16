@@ -1,11 +1,17 @@
 import GlobalLoader from "@/components/global-loader";
+import { useProfileData } from "@/hooks/queries/use-profile-data";
 import supabase from "@/lib/supabase";
-import { useIsSessionLoaded, useSetSession } from "@/store/session";
+import { useIsSessionLoaded, useSession, useSetSession } from "@/store/session";
 import { useEffect, type ReactNode } from "react";
 
 export default function SessionProvider({ children }: { children: ReactNode }) {
+  const session = useSession();
   const setSession = useSetSession();
   const isSessionLoaded = useIsSessionLoaded();
+
+  const { data: profile, isLoading: isProfileLoading } = useProfileData(
+    session?.user.id,
+  );
 
   useEffect(() => {
     /* 컴포넌트가 마운트되었을때 session 정보 업데이트 감지 이벤트 핸들러 등록 */
@@ -25,5 +31,6 @@ export default function SessionProvider({ children }: { children: ReactNode }) {
    * 초기 상태에서는 로그인이 되지 않은 것으로 판단이 되므로 의도치 않은 동작이 발생할 수 있다.
    */
   if (!isSessionLoaded) return <GlobalLoader />;
+  if (isProfileLoading) return <GlobalLoader />;
   return children;
 }
