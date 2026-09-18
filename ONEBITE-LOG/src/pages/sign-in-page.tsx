@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSignInWithPassword } from "@/hooks/mutations/use-sign-in-with-password";
-import { useSignInWithOAuth } from "@/hooks/mutations/use-sign-in-with-oauth";
+import { useSignInWithPassword } from "@/hooks/mutations/auth/use-sign-in-with-password";
+import { useSignInWithOAuth } from "@/hooks/mutations/auth/use-sign-in-with-oauth";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
 
 import gitHubLogo from "@/assets/github-mark.svg";
-import { generageErrorMessage } from "@/lib/error";
+import { generateErrorMessage } from "@/lib/error";
 
 export default function SignInPage() {
   const [email, setEmail] = useState<string>("");
@@ -18,7 +18,7 @@ export default function SignInPage() {
       onError: (error) => {
         console.error(error);
         // window.alert(error)
-        const message = generageErrorMessage(error);
+        const message = generateErrorMessage(error);
         toast.error(message, {
           position: "top-center",
         });
@@ -29,7 +29,7 @@ export default function SignInPage() {
   const { mutate: signInWithOAuth, isPending: isSignInWithOAuthPending } =
     useSignInWithOAuth({
       onError: (error) => {
-        const message = generageErrorMessage(error);
+        const message = generateErrorMessage(error);
         toast.error(message, {
           position: "top-center",
         });

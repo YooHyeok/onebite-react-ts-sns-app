@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRequestPasswordResetEmail } from "@/hooks/mutations/use-request-password-reset-email";
-import { generageErrorMessage } from "@/lib/error";
+import { useRequestPasswordResetEmail } from "@/hooks/mutations/auth/use-request-password-reset-email";
+import { generateErrorMessage } from "@/lib/error";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -18,7 +18,7 @@ export default function ForgetPaswordPage() {
       setEmail("");
     },
     onError: (error) => {
-      const message = generageErrorMessage(error);
+      const message = generateErrorMessage(error);
       toast.error(message, {
         position: "top-center",
       });

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSignUp } from "@/hooks/mutations/use-sign-up";
-import { generageErrorMessage } from "@/lib/error";
+import { useSignUp } from "@/hooks/mutations/auth/use-sign-up";
+import { generateErrorMessage } from "@/lib/error";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
@@ -12,7 +12,7 @@ export default function SignUpPage() {
 
   const { mutate: signUp, isPending: isSignUpPending } = useSignUp({
     onError: (error) => {
-      const message = generageErrorMessage(error); // 한국어 번역
+      const message = generateErrorMessage(error); // 한국어 번역
       toast.error(message, {
         position: "top-center",
       });
