@@ -27,7 +27,7 @@ const AUTH_ERROR_MESSAGE_MAP: Record<string, string> = {
   validation_failed: "이메일 주소가 올바르게 입력되지 않았습니다",
 };
 
-export function generageErrorMessage(error: unknown) {
+export function generateErrorMessage(error: unknown) {
   if (error instanceof AuthError && error.code) {
     return AUTH_ERROR_MESSAGE_MAP[error.code] ?? // ?? : 널 병합(nullish coalescing) 연산자 - null인 경우 ?? 기준 우항 을 적용
     "알 수 없는 인증 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
