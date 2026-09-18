@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useUpdatePassword } from "@/hooks/mutations/use-update-password";
-import { generageErrorMessage } from "@/lib/error";
+import { useUpdatePassword } from "@/hooks/mutations/auth/use-update-password";
+import { generateErrorMessage } from "@/lib/error";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
         navigate("/");
       },
       onError: (error) => {
-        const message = generageErrorMessage(error);
+        const message = generateErrorMessage(error);
         toast.error(message, {
           position: "top-center",
         });
