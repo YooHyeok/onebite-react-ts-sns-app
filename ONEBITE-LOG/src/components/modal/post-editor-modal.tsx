@@ -1,4 +1,9 @@
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
 import { generateErrorMessage } from "@/lib/error";
@@ -93,7 +98,41 @@ export default function PostEditorModal() {
           className="max-h-125 min-h-25 focus:outline-none"
           placeholder="무슨 일이 있었나요?"
         />
+        <input
+          onChange={handleSelectImages}
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+        />
+        {images.length > 0 && (
+          <Carousel>
+            <CarouselContent>
+              {images.map((image, idx) => (
+                <CarouselItem className="basis-2/5" key={image.previewUrl}>
+                  <div className="relative">
+                    <img
+                      src={image.previewUrl}
+                      alt={`미리보기 이미지 ${idx + 1}`}
+                      className="h-full w-full rounded-sm object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteImage(image)}
+                      className="absolute top-0 right-0 m-1 rounded-full bg-black/30 p-1"
+                      aria-label={`이미지 ${idx + 1} 삭제`}
+                    >
+                      <XIcon className="h-4 w-4 text-white" />
+                    </button>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        )}
         <Button
+          onClick={() => fileInputRef.current?.click()}
           disabled={isCreatePostPending}
           variant={"outline"}
           className="cursor-pointer"
