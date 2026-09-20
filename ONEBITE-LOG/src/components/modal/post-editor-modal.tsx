@@ -5,9 +5,13 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
+import {
+  useCreatePost,
+  useCreatePostWithImages,
+} from "@/hooks/mutations/post/use-create-post";
 import { generateErrorMessage } from "@/lib/error";
 import { usePostEditorModal } from "@/store/post-editor-modal";
+import { useSession } from "@/store/session";
 import { ImageIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
@@ -18,6 +22,7 @@ type Image = {
 };
 
 export default function PostEditorModal() {
+  const session = useSession();
   const { isOpen, close } = usePostEditorModal();
   const [content, setContent] = useState("");
   const [images, setImages] = useState<Image[]>([]);
@@ -29,7 +34,7 @@ export default function PostEditorModal() {
     close();
   };
 
-  const { mutate: createPost, isPending: isCreatePostPending } = useCreatePost({
+  /* const { mutate: createPost, isPending: isCreatePostPending } = useCreatePost({
     onSuccess: () => {
       close();
     },
@@ -39,11 +44,29 @@ export default function PostEditorModal() {
         position: "top-center",
       });
     },
-  });
+  }); */
+
+  const { mutate: createPostWithImages, isPending: isCreatePostPending } =
+    useCreatePostWithImages({
+      onSuccess: () => {
+        close();
+      },
+      onError: (error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, {
+          position: "top-center",
+        });
+      },
+    });
 
   const handleCreatePostClick = () => {
     if (content.trim() === "") return; // 입력값이 없으면 종료
-    createPost(content);
+    // createPost(content);
+    createPostWithImages({
+      content,
+      images: images.map((image) => image.file),
+      userId: session!.user.id, // !단언으로 반드시 있을것이라 단언
+    });
   };
 
   const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
