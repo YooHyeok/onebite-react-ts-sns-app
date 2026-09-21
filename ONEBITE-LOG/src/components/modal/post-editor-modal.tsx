@@ -10,6 +10,7 @@ import {
   useCreatePostWithImages,
 } from "@/hooks/mutations/post/use-create-post";
 import { generateErrorMessage } from "@/lib/error";
+import { useOpenAlertModal } from "@/store/alert-modal";
 import { usePostEditorModal } from "@/store/post-editor-modal";
 import { useSession } from "@/store/session";
 import { ImageIcon, XIcon } from "lucide-react";
@@ -24,6 +25,8 @@ type Image = {
 export default function PostEditorModal() {
   const session = useSession();
   const { isOpen, close } = usePostEditorModal();
+  const openAlertModal = useOpenAlertModal();
+
   const [content, setContent] = useState("");
   const [images, setImages] = useState<Image[]>([]);
 
@@ -31,6 +34,17 @@ export default function PostEditorModal() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCloseModal = () => {
+    if (content !== "" || images.length !== 0) {
+      openAlertModal({
+        title: "게시글 작성이 마무리 되지 않았습니다.",
+        descrption: "이 화면에서 나가면 작성중이던 내용이 사라집니다.",
+        onPositive: () => {
+          close();
+        },
+        onNegative: () => {},
+      });
+      return;
+    }
     close();
   };
 
