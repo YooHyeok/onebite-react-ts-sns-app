@@ -2,8 +2,18 @@ import { uploadImage } from "@/api/image";
 import supabase from "@/lib/supabase";
 import type { PostEntity } from "@/type";
 
+export async function fetchPosts() {
+  const { data, error } = await supabase
+  .from("post")
+  .select("*, author: profile!author_id (*)") // profile의 PK(id) 값을 갖는 post의 FK(author_id) 값을 기준으로 Profile 테이블과 Join하여 author 이름의 property로 래핑
+  .order("created_at", {ascending: false /* 내름차순 정렬 */})
+  if (error) throw error;
+  return data;
+}
+
 export async function createPost(content: string) {
-  const { data, error } = await supabase.from("post")
+  const { data, error } = await supabase
+  .from("post")
   .insert({
     content
   })
@@ -54,7 +64,8 @@ export async function createPostWithImages({content, images, userId}: {content: 
  * @param post 
  */
 export async function updatePost(post: Partial<PostEntity> & {id: number}) {
-  const { data, error } = await supabase.from("post")
+  const { data, error } = await supabase
+  .from("post")
   .update(post)
   .eq("id", post.id)
   .select()
@@ -64,7 +75,8 @@ export async function updatePost(post: Partial<PostEntity> & {id: number}) {
 }
 
 export async function deletePost(id: number) {
-  const { data, error } = await supabase.from("post")
+  const { data, error } = await supabase
+  .from("post")
   .delete()
   .eq("id", id)
   .select()
