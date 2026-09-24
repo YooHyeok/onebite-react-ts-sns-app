@@ -2,11 +2,32 @@ import { uploadImage } from "@/api/image";
 import supabase from "@/lib/supabase";
 import type { PostEntity } from "@/type";
 
+/**
+ * supabase posts 전체 조회 fetch 함수
+ * @returns 
+ * @deprecated 최초 조회 방식으로 무한스크롤을 구현하게 되면서 더이상 사용하지 않음
+ */
 export async function fetchPosts() {
   const { data, error } = await supabase
   .from("post")
   .select("*, author: profile!author_id (*)") // profile의 PK(id) 값을 갖는 post의 FK(author_id) 값을 기준으로 Profile 테이블과 Join하여 author 이름의 property로 래핑
   .order("created_at", {ascending: false /* 내름차순 정렬 */})
+  if (error) throw error;
+  return data;
+}
+/**
+ * supabase posts 범위 조회 fetch 함수
+ * 페이징 처리시 사용하는 방식으로, 조회할 범위를 받아 raange함수를 통해 범위조회한다.
+ * infinite, 무한스크롤 조회 기능을 구현하며 추가된 메소드.
+ * @param param0 
+ * @returns 
+ */
+export async function fetchPostsByRange({from, to}: {from:number; to:number;}) {
+  const { data, error } = await supabase
+  .from("post")
+  .select("*, author: profile!author_id (*)") // profile의 PK(id) 값을 갖는 post의 FK(author_id) 값을 기준으로 Profile 테이블과 Join하여 author 이름의 property로 래핑
+  .order("created_at", {ascending: false /* 내름차순 정렬 */})
+  .range(from, to)
   if (error) throw error;
   return data;
 }
