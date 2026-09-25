@@ -1,11 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { useOpenPostEditorModal } from "@/store/post-editor-modal";
+import { useOpenEditPostModal } from "@/store/post-editor-modal";
+import type { PostEntity } from "@/type";
 
-export default function EditPostItemButton() {
-  const openPostEditorModal = useOpenPostEditorModal();
+export default function EditPostItemButton(props: PostEntity) {
+  const openEditPostModal = useOpenEditPostModal();
 
   const handleButtonClick = () => {
-    openPostEditorModal();
+    openEditPostModal({
+      postId: props.id,
+      content: props.content,
+      imageUrls: props.image_urls,
+    });
   };
 
   return (
