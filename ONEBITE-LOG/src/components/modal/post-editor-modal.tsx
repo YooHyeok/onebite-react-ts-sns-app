@@ -9,6 +9,7 @@ import {
   useCreatePost,
   useCreatePostWithImages,
 } from "@/hooks/mutations/post/use-create-post";
+import { useUpdatePost } from "@/hooks/mutations/post/use-update-post";
 import { generateErrorMessage } from "@/lib/error";
 import { useOpenAlertModal } from "@/store/alert-modal";
 import { usePostEditorModal } from "@/store/post-editor-modal";
@@ -24,7 +25,8 @@ type Image = {
 
 export default function PostEditorModal() {
   const session = useSession();
-  const { isOpen, close } = usePostEditorModal();
+  const postEditorModal = usePostEditorModal();
+  console.log(postEditorModal);
   const openAlertModal = useOpenAlertModal();
 
   const [content, setContent] = useState("");
@@ -42,16 +44,23 @@ export default function PostEditorModal() {
   }, [content]);
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!postEditorModal.isOpen) {
       images.forEach((image) => {
         URL.revokeObjectURL(image.previewUrl); // chrome://blob-internals/
       });
       return;
     }
+
+    if (postEditorModal.type === "CREATE") {
+      setContent("");
+      setImages([]);
+    } else {
+      setContent(postEditorModal.content);
+      setImages([]); // 대부분의 sns와 같이 content수정만 하고 이미지 수정은 하지 않는다.
+    }
+
     textareaRef.current?.focus();
-    setContent("");
-    setImages([]);
-  }, [isOpen]);
+  }, [postEditorModal.isOpen]);
 
   const handleCloseModal = () => {
     if (content !== "" || images.length !== 0) {
@@ -59,13 +68,13 @@ export default function PostEditorModal() {
         title: "게시글 작성이 마무리 되지 않았습니다.",
         descrption: "이 화면에서 나가면 작성중이던 내용이 사라집니다.",
         onPositive: () => {
-          close();
+          postEditorModal.actions.close();
         },
         onNegative: () => {},
       });
       return;
     }
-    close();
+    postEditorModal.actions.close();
   };
 
   /* const { mutate: createPost, isPending: isCreatePostPending } = useCreatePost({
@@ -83,7 +92,7 @@ export default function PostEditorModal() {
   const { mutate: createPostWithImages, isPending: isCreatePostPending } =
     useCreatePostWithImages({
       onSuccess: () => {
-        close();
+        postEditorModal.actions.close();
       },
       onError: (error) => {
         const message = generateErrorMessage(error);
@@ -93,14 +102,37 @@ export default function PostEditorModal() {
       },
     });
 
-  const handleCreatePostClick = () => {
+  const { mutate: updatePost, isPending: isUpdatePostPending } = useUpdatePost({
+    onSuccess: () => {
+      postEditorModal.actions.close();
+    },
+    onError: (error) => {
+      const message = generateErrorMessage(error);
+      toast.error(message, {
+        position: "top-center",
+      });
+    },
+  });
+
+  const handleSavePostClick = () => {
     if (content.trim() === "") return; // 입력값이 없으면 종료
-    // createPost(content);
-    createPostWithImages({
-      content,
-      images: images.map((image) => image.file),
-      userId: session!.user.id, // !단언으로 반드시 있을것이라 단언
-    });
+    if (!postEditorModal.isOpen) return;
+
+    if (postEditorModal.type === "CREATE") {
+      // createPost(content);
+      createPostWithImages({
+        content,
+        images: images.map((image) => image.file),
+        userId: session!.user.id, // !단언으로 반드시 있을것이라 단언
+      });
+    } else {
+      if (content === postEditorModal.content) return;
+      updatePost({
+        id: postEditorModal.postId,
+        content: content,
+        image_urls: postEditorModal.imageUrls,
+      });
+    }
   };
 
   const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
@@ -129,12 +161,14 @@ export default function PostEditorModal() {
     URL.revokeObjectURL(image.previewUrl); // chrome://blob-internals/
   };
 
+  const isPending = isCreatePostPending || isUpdatePostPending;
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleCloseModal}>
+    <Dialog open={postEditorModal.isOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="max-h-[90vh]">
         <DialogTitle>포스트 작성</DialogTitle>
         <textarea
-          disabled={isCreatePostPending}
+          disabled={isPending}
           ref={textareaRef}
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -149,6 +183,22 @@ export default function PostEditorModal() {
           multiple
           className="hidden"
         />
+        {postEditorModal.isOpen && postEditorModal.type === "EDIT" && (
+          <Carousel>
+            <CarouselContent>
+              {postEditorModal.imageUrls?.map((url) => (
+                <CarouselItem className="basis-2/5" key={url}>
+                  <div className="relative">
+                    <img
+                      src={url}
+                      className="h-full w-full rounded-sm object-cover"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        )}
         {images.length > 0 && (
           <Carousel>
             <CarouselContent>
@@ -174,18 +224,21 @@ export default function PostEditorModal() {
             </CarouselContent>
           </Carousel>
         )}
+        {postEditorModal.isOpen && postEditorModal.type === "CREATE" && (
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isPending}
+            variant={"outline"}
+            className="cursor-pointer"
+          >
+            <ImageIcon />
+            이미지 추가
+          </Button>
+        )}
+
         <Button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isCreatePostPending}
-          variant={"outline"}
-          className="cursor-pointer"
-        >
-          <ImageIcon />
-          이미지 추가
-        </Button>
-        <Button
-          disabled={isCreatePostPending}
-          onClick={handleCreatePostClick}
+          disabled={isPending}
+          onClick={handleSavePostClick}
           className="cursor-pointer"
         >
           저장
