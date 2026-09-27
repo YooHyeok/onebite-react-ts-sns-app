@@ -26,8 +26,11 @@ export function PostFeed() {
   return (
     <div className="flex flex-col gap-10">
       {data.pages.map((page) =>
-        page.map((post) => <PostItem key={post.id} {...post} />),
+        page.map((postId) => <PostItem key={postId} postId={postId} />),
       )}
+      {/* {data.pages.map((page) =>
+        page.map((post) => <PostItem key={post.id} {...post} />),
+      )} */}
       {isFetchingNextPage && <Loader />}
       {/* {data.map((post) => (
         <PostItem key={post.id} {...post} /> // 전개함으로써, 컴포넌트의 매개변수 props가 post객체 그 자체로 넘어감.
