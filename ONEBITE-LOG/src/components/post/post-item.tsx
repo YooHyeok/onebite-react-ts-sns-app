@@ -11,11 +11,31 @@ import { formatTimeAgo } from "@/lib/time";
 import EditPostButton from "@/components/post/edit-post-button";
 import DeletePostButton from "@/components/post/delete-post-button";
 import { useSession } from "@/store/session";
+import { usePostByIdData } from "@/hooks/queries/use-post-by-id.data";
+import FallBack from "@/components/fallback";
+import Loader from "@/components/loader";
 
-export default function PostItem(post: Post) {
+// export default function PostItem(post: Post) {
+export default function PostItem({ postId }: { postId: number }) {
+  const {
+    data: post,
+    isPending,
+    error,
+  } = usePostByIdData({
+    postId: postId,
+    type: "FEED",
+  });
+
+  console.log("post = ", post);
+
   const seeeion = useSession();
   const userId = seeeion?.user.id;
+
+  if (isPending) return <Loader />;
+  if (error) return <FallBack />;
+
   const isMine = post.author_id === userId;
+
   return (
     <div className="flex flex-col gap-4 border-b pb-8">
       {/* 1. 유저 정보, 수정/삭제 버튼 */}
