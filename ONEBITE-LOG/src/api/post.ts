@@ -22,7 +22,7 @@ export async function fetchPosts() {
  * @param param0 
  * @returns 
  */
-export async function fetchPostsByRange({from, to}: {from:number; to:number;}) {
+export async function fetchPostsBetween({from, to}: {from:number; to:number;}) {
   const { data, error } = await supabase
   .from("post")
   .select("*, author: profile!author_id (*)") // profile의 PK(id) 값을 갖는 post의 FK(author_id) 값을 기준으로 Profile 테이블과 Join하여 author 이름의 property로 래핑
@@ -30,6 +30,21 @@ export async function fetchPostsByRange({from, to}: {from:number; to:number;}) {
   .range(from, to)
   if (error) throw error;
   return data;
+}
+
+export async function fetchPostsWithAuthorAndLikeBetween({from, to, userId}: {from:number; to:number; userId: string}) {
+  const { data, error } = await supabase
+  .from("post")
+  // .select("*, author: profile!author_id (*)") // profile의 PK(id) 값을 갖는 post의 FK(author_id) 값을 기준으로 Profile 테이블과 Join하여 author 이름의 property로 래핑
+  .select("*, author: profile!author_id (*), myLiked: like!post_id (*)") // like의 pk(id) 값을 갖는 post의 FK(post_id) 값을 기준으로 myLike 이름의 property로 래핑
+  .eq("like.user_id", userId)
+  .order("created_at", {ascending: false /* 내름차순 정렬 */})
+  .range(from, to)
+  if (error) throw error;
+  return data.map((post) => ({
+    ...post,
+    isLiked: post.myLiked && post.myLiked.length > 0
+  }));
 }
 
 /**
@@ -41,12 +56,39 @@ export async function fetchPostsByRange({from, to}: {from:number; to:number;}) {
 export async function fetchPostById(postId: number) {
   const { data, error } = await supabase
   .from("post")
+  .select("*")
+  .eq("id", postId)
+  .single()
+
+  if (error) throw error;
+  return data;
+
+}
+export async function fetchPostByIdWithAuthor(postId: number) {
+  const { data, error } = await supabase
+  .from("post")
   .select("*, author: profile!author_id (*)")
   .eq("id", postId)
   .single()
 
   if (error) throw error;
   return data;
+
+}
+export async function fetchPostByIdWithAuthorAndLike({postId, userId}: {postId: number, userId: string}) {
+  const { data, error } = await supabase
+  .from("post")
+  // .select("*, author: profile!author_id (*)")
+  .select("*, author: profile!author_id (*), myLiked: like!post_id (*)") // like의 pk(id) 값을 갖는 post의 FK(post_id) 값을 기준으로 myLike 이름의 property로 래핑
+  .eq("like.user_id", userId)
+  .eq("id", postId)
+  .single()
+
+  if (error) throw error;
+  return {
+    ...data,
+    isLiked:data.myLiked && data.myLiked.length > 0
+  };
 
 }
 
