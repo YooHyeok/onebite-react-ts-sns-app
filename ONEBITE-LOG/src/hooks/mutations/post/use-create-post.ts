@@ -21,9 +21,10 @@ export function useCreatePostWithImages(callbacks?: useMutationCallback) {
     mutationFn: createPostWithImages,
     onSuccess: () => {
       if (callbacks?.onSuccess) callbacks.onSuccess()
-      // post가 추가된 후 재조회 => (1.) 캐시 데이터 초기화 / 2. 캐시 데이터에 완성된 포스트만 추가 / 3. 낙관적 업데이트 방식(onMutate)
+      // post가 추가된 후 재조회
+      // (1.) 캐시 데이터 초기화 / 2. 캐시 데이터에 완성된 포스트만 추가 / 3. 낙관적 업데이트 방식(onMutate)
       // queryClient.invalidateQueries(); // 전체 데이터 재조회는 무한스크롤에서는 성능 이슈 발생
-      queryClient.resetQueries({
+      queryClient.resetQueries({ // 캐시가 초기화되면서 스크롤도 초기화 된다.
         queryKey: QUERY_KEYS.post.list
       })
 
