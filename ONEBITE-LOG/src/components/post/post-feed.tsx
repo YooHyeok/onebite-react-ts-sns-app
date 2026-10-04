@@ -9,10 +9,10 @@ import { useEffect } from "react";
 
 import { useInView } from "react-intersection-observer";
 
-export function PostFeed() {
+export function PostFeed({ authorId }: { authorId?: string }) {
   // const { data, error, isPending } = usePostsData();
   const { data, error, isPending, fetchNextPage, isFetchingNextPage } =
-    useInfinitePostsData();
+    useInfinitePostsData(authorId);
   const { ref, inView } = useInView(); // ref를 지정한 특정 돔 요소를 감지하면 inView가 true로 변경됨. (스크롤등을 통해 요소가 브라우저에서 사라지면 false가 됨)
 
   useEffect(() => {
