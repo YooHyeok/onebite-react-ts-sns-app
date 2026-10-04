@@ -32,14 +32,20 @@ export async function fetchPostsBetween({from, to}: {from:number; to:number;}) {
   return data;
 }
 
-export async function fetchPostsWithAuthorAndLikeBetween({from, to, userId}: {from:number; to:number; userId: string}) {
-  const { data, error } = await supabase
+export async function fetchPostsWithAuthorAndLikeBetween({from, to, userId, authorId}: {from:number; to:number; userId: string; authorId?: string}) {
+  
+  const request = supabase
   .from("post")
   // .select("*, author: profile!author_id (*)") // profile의 PK(id) 값을 갖는 post의 FK(author_id) 값을 기준으로 Profile 테이블과 Join하여 author 이름의 property로 래핑
   .select("*, author: profile!author_id (*), myLiked: like!post_id (*)") // like의 pk(id) 값을 갖는 post의 FK(post_id) 값을 기준으로 myLike 이름의 property로 래핑
   .eq("like.user_id", userId)
   .order("created_at", {ascending: false /* 내름차순 정렬 */})
   .range(from, to)
+  
+  if (authorId) request.eq("author_id", authorId);
+
+  const { data, error } = await request
+
   if (error) throw error;
   return data.map((post) => ({
     ...post,
