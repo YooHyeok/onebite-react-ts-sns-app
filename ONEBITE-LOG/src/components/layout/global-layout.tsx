@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router";
 import logo from "@/assets/logo.png";
-import defaultAvatar from "@/assets/default-avatar.png";
 import { SunIcon } from "lucide-react";
+import ProfileButton from "@/components/layout/header/profile-button";
 
 export default function GlobalLayout() {
   return (
@@ -21,11 +21,7 @@ export default function GlobalLayout() {
               <SunIcon />{" "}
               {/* Shadcn UI 셋업시 설치된 Lucide React 라이브러리의 아이콘 */}
             </div>
-            <img
-              className="h-6"
-              src={defaultAvatar}
-              alt="한입 로그의 로고, 메세지 말풍선을 형상화한 모양이다"
-            />
+            <ProfileButton />
           </div>
         </div>
       </header>
