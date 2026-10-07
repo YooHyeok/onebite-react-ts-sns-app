@@ -2,10 +2,18 @@ import { Button } from "@/components/ui/button";
 import { useDeletePost } from "@/hooks/mutations/post/use-delete-post";
 import { generateErrorMessage } from "@/lib/error";
 import { useOpenAlertModal } from "@/store/alert-modal";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function DeletePostButton({ id }: { id: number }) {
+  const navigate = useNavigate();
   const { mutate: deletePost, isPending: isDeletePending } = useDeletePost({
+    onSuccess: () => {
+      const pathname = window.location.pathname;
+      if (pathname.startsWith(`/post/${id}`)) {
+        navigate("/", { replace: true });
+      }
+    },
     onError: (error) => {
       const message = generateErrorMessage(error);
       toast.error(message, {
