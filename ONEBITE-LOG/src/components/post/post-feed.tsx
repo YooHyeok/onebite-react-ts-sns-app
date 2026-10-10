@@ -4,7 +4,7 @@ import PostItem from "@/components/post/post-item";
 import {
   useInfinitePostsData, // 스크롤 하단 감지를 위한 라이브러리 npm install react-intersection-observer
 } from "@/hooks/queries/use-infinite-posts-data";
-// import { usePostsData } from "@/hooks/queries/use-posts.data";
+// import { usePostsData } from "@/hooks/queries/use-posts-data";
 import { useEffect } from "react";
 
 import { useInView } from "react-intersection-observer";
