@@ -11,7 +11,7 @@ import { formatTimeAgo } from "@/lib/time";
 import EditPostButton from "@/components/post/edit-post-button";
 import DeletePostButton from "@/components/post/delete-post-button";
 import { useSession } from "@/store/session";
-import { usePostByIdData } from "@/hooks/queries/use-post-by-id.data";
+import { usePostByIdData } from "@/hooks/queries/use-post-by-id-data";
 import FallBack from "@/components/fallback";
 import Loader from "@/components/loader";
 import LikePostButton from "@/components/post/like-post-button";
