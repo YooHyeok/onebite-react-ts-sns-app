@@ -1,5 +1,15 @@
 import supabase from "@/lib/supabase";
 
+export async function fetchCommentsByPostIdWithAuthor(postId: number) {
+  
+  const {data, error} = await supabase
+  .from("comment")
+  .select("*, author: profile!author_id (*)")
+  .eq("post_id", postId);
+
+  if (error) throw error;
+  return data;
+}
 export async function createComment({postId, content}: {postId: number; content: string}) {
   
   const {data, error} = await supabase
