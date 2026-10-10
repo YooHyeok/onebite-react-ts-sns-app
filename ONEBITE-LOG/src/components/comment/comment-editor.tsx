@@ -1,7 +1,7 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useCreateComment } from "@/hooks/mutations/comment/useCreateComment";
+import { useCreateComment } from "@/hooks/mutations/comment/use-create-comment";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
 
