@@ -1,12 +1,31 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCreateComment } from "@/hooks/mutations/comment/use-create-comment";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
+import { useUpdateComment } from "@/hooks/mutations/comment/use-update-comment";
 
-export default function CommentEditor({ postId }: { postId: number }) {
+type CreateMode = {
+  type: "CREATE";
+  postId: number;
+};
+type EditMode = {
+  type: "EDIT";
+  commentId: number;
+  initialContent: string;
+  onClose: () => void;
+};
+
+type Props = CreateMode | EditMode;
+
+export default function CommentEditor(props: Props) {
   const [content, setContent] = useState("");
+  useEffect(() => {
+    if (props.type === "EDIT") {
+      setContent(props.initialContent);
+    }
+  }, []);
   const { mutate: createComment, isPending: isCreateCommentPending } =
     useCreateComment({
       onSuccess: () => {},
@@ -17,17 +36,51 @@ export default function CommentEditor({ postId }: { postId: number }) {
         });
       },
     });
+  const { mutate: updateComment, isPending: isUpdateCommentPending } =
+    useUpdateComment({
+      onSuccess: () => {
+        (props as EditMode).onClose();
+      },
+      onError: (error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, {
+          position: "top-center",
+        });
+      },
+    });
   const handleSubmitClick = () => {
     if (content.trim() === "") return;
 
-    // 요청
-    createComment({ postId, content });
+    if (props.type === "CREATE") {
+      // 요청
+      createComment({ postId: props.postId, content });
+      return;
+    }
+    updateComment({ id: props.commentId, content });
   };
+
+  const isPending = isCreateCommentPending || isUpdateCommentPending;
+
   return (
     <div className="flex flex-col gap-2">
-      <Textarea value={content} onChange={(e) => setContent(e.target.value)} />
-      <div className="flex justify-end">
-        <Button onClick={handleSubmitClick}>작성</Button>
+      <Textarea
+        disabled={isPending}
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+      <div className="flex justify-end gap-2">
+        {props.type === "EDIT" && (
+          <Button
+            disabled={isPending}
+            variant={"outline"}
+            onClick={props.onClose}
+          >
+            취소
+          </Button>
+        )}
+        <Button disabled={isPending} onClick={handleSubmitClick}>
+          작성
+        </Button>
       </div>
     </div>
   );
