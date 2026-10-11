@@ -9,7 +9,6 @@ import { useDeleteComment } from "@/hooks/mutations/comment/use-delete-comment";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
 import { useOpenAlertModal } from "@/store/alert-modal";
-import { Description } from "@radix-ui/react-dialog";
 
 export default function CommentItem(props: Comment) {
   const session = useSession();
