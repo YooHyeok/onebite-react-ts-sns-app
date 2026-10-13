@@ -28,7 +28,9 @@ export default function CommentEditor(props: Props) {
   }, []);
   const { mutate: createComment, isPending: isCreateCommentPending } =
     useCreateComment({
-      onSuccess: () => {},
+      onSuccess: () => {
+        setContent("");
+      },
       onError: (error) => {
         const message = generateErrorMessage(error);
         toast.error(message, {
