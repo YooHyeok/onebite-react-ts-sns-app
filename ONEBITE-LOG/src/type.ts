@@ -6,6 +6,7 @@ export type ProfileEntity = Database["public"]["Tables"]["profile"]["Row"]
 
 export type Post = PostEntity & { author: ProfileEntity; isLiked: boolean }
 export type Comment = CommentEntity & { author: ProfileEntity }
+export type NestedComment = Comment & { parentComment?: Comment; children: NestedComment[] } /* 대댓글 타입: 재귀 구조 */
 
 export type useMutationCallback = {
   onSuccess?: () => void;
