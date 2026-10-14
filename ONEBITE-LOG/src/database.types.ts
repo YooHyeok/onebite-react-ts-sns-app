@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -20,6 +20,7 @@ export type Database = {
           content: string
           created_at: string
           id: number
+          parent_coment_id: number | null
           post_id: number
         }
         Insert: {
@@ -27,6 +28,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: number
+          parent_coment_id?: number | null
           post_id: number
         }
         Update: {
@@ -34,6 +36,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: number
+          parent_coment_id?: number | null
           post_id?: number
         }
         Relationships: [
@@ -42,6 +45,13 @@ export type Database = {
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_parent_coment_id_fkey"
+            columns: ["parent_coment_id"]
+            isOneToOne: false
+            referencedRelation: "comment"
             referencedColumns: ["id"]
           },
           {
