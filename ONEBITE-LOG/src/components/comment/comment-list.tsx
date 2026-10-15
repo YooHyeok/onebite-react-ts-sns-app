@@ -4,7 +4,7 @@ import Loader from "@/components/loader";
 import { useCommentsData } from "@/hooks/queries/use-comments-data";
 import type { Comment, NestedComment } from "@/type";
 
-function toNestedComments(comments: Comment[]): NestedComment[] {
+function toNestedCommentsOld(comments: Comment[]): NestedComment[] {
   const result: NestedComment[] = [];
   comments.forEach((comment) => {
     if (!comment.parent_coment_id) {
@@ -17,6 +17,29 @@ function toNestedComments(comments: Comment[]): NestedComment[] {
         ...comment,
         children: [],
         parentComment: result[parentCommentIndex],
+      });
+    }
+  });
+  return result;
+}
+function toNestedComments(comments: Comment[]): NestedComment[] {
+  const result: NestedComment[] = [];
+  comments.forEach((comment) => {
+    if (!comment.root_coment_id) {
+      result.push({ ...comment, children: [] });
+    } else {
+      const rootCommentIndex = result.findIndex(
+        (item) => item.id === comment.root_coment_id,
+      );
+      const parentComment = comments.find(
+        (item) => item.id === comment.parent_coment_id,
+      );
+      if (rootCommentIndex === -1) return;
+      if (!parentComment) return;
+      result[rootCommentIndex].children.push({
+        ...comment,
+        children: [],
+        parentComment: parentComment,
       });
     }
   });
