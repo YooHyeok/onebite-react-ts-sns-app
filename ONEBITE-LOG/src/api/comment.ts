@@ -11,11 +11,11 @@ export async function fetchCommentsByPostIdWithAuthor(postId: number) {
   if (error) throw error;
   return data;
 }
-export async function createComment({postId, content, parentCommentId}: {postId: number; content: string; parentCommentId?: number}) {
+export async function createComment({postId, content, parentCommentId, rootCommentId}: {postId: number; content: string; parentCommentId?: number; rootCommentId?: number}) {
   
   const {data, error} = await supabase
   .from("comment")
-  .insert({post_id: postId, content: content, parent_coment_id: parentCommentId})
+  .insert({post_id: postId, content: content, parent_coment_id: parentCommentId, root_coment_id: rootCommentId})
   .select()
   .single();
 
