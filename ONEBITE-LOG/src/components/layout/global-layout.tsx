@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router";
 import logo from "@/assets/logo.png";
-import { SunIcon } from "lucide-react";
 import ProfileButton from "@/components/layout/header/profile-button";
+import ThemeButton from "@/components/layout/header/theme-button";
 
 export default function GlobalLayout() {
   return (
@@ -17,10 +17,7 @@ export default function GlobalLayout() {
             <div className="font-bold">한입 로그</div>
           </Link>
           <div className="flex items-center gap-5">
-            <div className="hover:bg-muted cursor-pointer rounded-full p-2">
-              <SunIcon />{" "}
-              {/* Shadcn UI 셋업시 설치된 Lucide React 라이브러리의 아이콘 */}
-            </div>
+            <ThemeButton />
             <ProfileButton />
           </div>
         </div>
