@@ -1,5 +1,7 @@
 import { Link, Outlet } from "react-router";
 import logo from "@/assets/logo.png";
+import defaultAvatar from "@/assets/default-avatar.png";
+import { SunIcon } from "lucide-react";
 import ProfileButton from "@/components/layout/header/profile-button";
 import ThemeButton from "@/components/layout/header/theme-button";
 
@@ -23,10 +25,10 @@ export default function GlobalLayout() {
         </div>
       </header>
       <main className="m-auto w-full max-w-175 flex-1 border-x px-4 py-6">
-        <Outlet /> {/* 페이지 컴포넌트가 실제로 렌더링 될 위치 */}
+        <Outlet />
       </main>
       <footer className="text-muted-foreground border-t py-10 text-center">
-        @yoohyeokschool
+        @winterlood
       </footer>
     </div>
   );
